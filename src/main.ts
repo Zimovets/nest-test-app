@@ -10,7 +10,7 @@ async function bootstrap() {
   // all exceptions handling
   const adapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(adapterHost));
-
+  // all req res intersept and log
   app.useGlobalInterceptors(new LogsInterceptor());
 
   await app.listen(3000);

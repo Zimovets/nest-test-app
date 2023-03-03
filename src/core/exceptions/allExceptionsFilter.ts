@@ -29,7 +29,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
       path: httpAdapter.getRequestUrl(ctx.getRequest()),
       message: exception['message'],
     };
-
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
 }
