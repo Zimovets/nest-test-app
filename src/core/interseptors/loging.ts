@@ -3,12 +3,15 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
+  Logger,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class LogsInterceptor implements NestInterceptor {
+  private readonly logger = new Logger(LogsInterceptor.name);
+
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest();
     const { statusCode } = context.switchToHttp().getResponse();
@@ -25,15 +28,14 @@ export class LogsInterceptor implements NestInterceptor {
     };
 
     return next.handle().pipe(
-      catchError(async (err) => console.log({ requestInfo }, err)),
       tap((data) => {
         const resTime = Date.now();
-        console.log({
+        this.logger.log({
           requestInfo,
           responseInfo: {
             statusCode,
             resTime,
-            data: data.dataValues,
+            data,
             duration: `${resTime - reqTime}msc`,
           },
         });

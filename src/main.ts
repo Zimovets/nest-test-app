@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './core/exceptions/allExceptionsFilter';
@@ -12,6 +13,7 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter(adapterHost));
   // all req res intersept and log
   app.useGlobalInterceptors(new LogsInterceptor());
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(3000);
 }
