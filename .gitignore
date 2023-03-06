@@ -35,3 +35,4 @@ lerna-debug.log*
 !.vscode/extensions.json
 .env
 src/core/database/config.ts
+todo.txt
