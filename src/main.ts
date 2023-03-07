@@ -12,6 +12,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   // all req res intersept and log
   app.useGlobalInterceptors(new LogsInterceptor());
+  // enable DTO validation
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(3000);
