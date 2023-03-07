@@ -24,7 +24,6 @@ export class LogsInterceptor implements NestInterceptor {
       params,
       query,
       body,
-      reqTime,
     };
 
     return next.handle().pipe(
@@ -34,7 +33,6 @@ export class LogsInterceptor implements NestInterceptor {
           requestInfo,
           responseInfo: {
             statusCode,
-            resTime,
             data,
             duration: `${resTime - reqTime}msc`,
           },

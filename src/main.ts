@@ -1,7 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { AllExceptionsFilter } from './core/exceptions/allExceptionsFilter';
+import { HttpExceptionFilter } from './core/exceptions/httpExceptionFilter';
 import { LogsInterceptor } from './core/interseptors/loging';
 
 async function bootstrap() {
@@ -9,8 +9,7 @@ async function bootstrap() {
   // global prefix
   app.setGlobalPrefix('api/v1');
   // all exceptions handling
-  const adapterHost = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new AllExceptionsFilter(adapterHost));
+  app.useGlobalFilters(new HttpExceptionFilter());
   // all req res intersept and log
   app.useGlobalInterceptors(new LogsInterceptor());
   app.useGlobalPipes(new ValidationPipe());
