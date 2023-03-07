@@ -23,9 +23,8 @@ export class AuthService {
       return null;
     }
 
-    // tslint:disable-next-line: no-string-literal
-    const { ...result } = user['dataValues'];
-    return result;
+    const { id, name, email } = user.dataValues;
+    return { id, name, email };
   }
 
   public async login(user) {
