@@ -2,10 +2,10 @@ import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './authService';
 import { UserDto } from '../users/dto/user.dto';
-import { LogInDto } from '../users/dto/logInDto';
+import { LogInDto } from '../users/dto/logIn.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LogInResDto } from '../users/dto/logInResDto';
-import { ExceptionResponse } from 'src/core/exceptions/dto/logInException';
+import { UserResDto } from '../users/dto/userRes.dto';
+import { ExceptionResponse } from 'src/core/exceptions/dto/exceptionResponse';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -13,7 +13,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @ApiResponse({
-    type: LogInResDto,
+    type: UserResDto,
     status: 201,
     description: 'User login success',
   })
@@ -27,6 +27,15 @@ export class AuthController {
     return await this.authService.login(user);
   }
 
+  @ApiResponse({
+    type: UserResDto,
+    status: 201,
+    description: 'User created successfully',
+  })
+  @ApiResponse({
+    type: ExceptionResponse,
+    status: 400,
+  })
   @Post('signup')
   async signUp(@Body() user: UserDto) {
     return await this.authService.create(user);

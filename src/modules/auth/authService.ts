@@ -29,7 +29,9 @@ export class AuthService {
 
   public async login(user) {
     const token = await this.generateToken(user);
-    return { token };
+    user = await this.userService.findOneByEmail(user.username);
+
+    return { user: this.extractUserData(user), token };
   }
 
   public async create(user) {
@@ -45,7 +47,12 @@ export class AuthService {
     const token = await this.generateToken(result);
 
     // return the user and the token
-    return { user: result, token };
+    return { user: this.extractUserData(result), token };
+  }
+
+  private extractUserData(user) {
+    const { id, name, email } = user;
+    return { id, name, email };
   }
 
   private async generateToken(user) {
