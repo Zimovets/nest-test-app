@@ -5,7 +5,7 @@ import { UserDto } from '../users/dto/user.dto';
 import { LogInDto } from '../users/dto/logInDto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LogInResDto } from '../users/dto/logInResDto';
-import { LogInException } from 'src/core/exceptions/dto/logInException';
+import { ExceptionResponse } from 'src/core/exceptions/dto/logInException';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -18,7 +18,7 @@ export class AuthController {
     description: 'User login success',
   })
   @ApiResponse({
-    type: LogInException,
+    type: ExceptionResponse,
     status: 401,
   })
   @UseGuards(AuthGuard('local'))

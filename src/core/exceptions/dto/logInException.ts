@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class LogInException {
+export class ExceptionResponse {
   @ApiProperty({ description: 'Response status', nullable: false })
   readonly status: string;
 
