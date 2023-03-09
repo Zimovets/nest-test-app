@@ -28,10 +28,10 @@ export class AuthService {
   }
 
   public async login(user) {
-    const token = await this.generateToken(user);
+    const { token, refreshToken } = await this.generateToken(user);
     user = await this.userService.findOneByEmail(user.username);
 
-    return { user: this.extractUserData(user), token };
+    return { user: this.extractUserData(user), token, refreshToken };
   }
 
   public async create(user) {
@@ -44,10 +44,10 @@ export class AuthService {
     const { ...result } = newUser['dataValues'];
 
     // generate token
-    const token = await this.generateToken(result);
+    const { token, refreshToken } = await this.generateToken(result);
 
     // return the user and the token
-    return { user: this.extractUserData(result), token };
+    return { user: this.extractUserData(result), token, refreshToken };
   }
 
   private extractUserData(user) {
@@ -55,10 +55,17 @@ export class AuthService {
     return { id, name, email };
   }
 
-  private async generateToken(user) {
+  public async generateToken(user) {
     const payload = { username: user.username, sub: user.username };
-    const token = await this.jwtService.signAsync(payload);
-    return token;
+    const token = await this.jwtService.signAsync(payload, {
+      secret: process.env.JWTKEY,
+      expiresIn: process.env.TOKEN_EXPIRATION,
+    });
+    const refreshToken = await this.jwtService.signAsync(payload, {
+      secret: process.env.JWTREFRESHKEY,
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRATION,
+    });
+    return { token, refreshToken };
   }
 
   private async hashPassword(password) {

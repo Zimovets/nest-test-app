@@ -1,11 +1,13 @@
-import { Controller, Body, Post, UseGuards } from '@nestjs/common';
+import { Controller, Body, Post, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './authService';
 import { UserDto } from '../users/dto/user.dto';
 import { LogInDto } from '../users/dto/logIn.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserResDto } from '../users/dto/userRes.dto';
 import { ExceptionResponse } from 'src/core/exceptions/dto/exceptionResponse';
-import { LocalAuthGuard } from './local-auth.guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { RefreshJwtAuthGuard } from './guards/refresh.jwt.guard';
+import { RefreshDto } from './dto/refresh.dto';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -39,5 +41,22 @@ export class AuthController {
   @Post('signup')
   async signUp(@Body() user: UserDto) {
     return await this.authService.create(user);
+  }
+
+  @ApiResponse({
+    type: RefreshDto,
+    status: 201,
+    description:
+      'Refresh token successfully, work only with refresh token in Authorization header',
+  })
+  @ApiResponse({
+    type: ExceptionResponse,
+    status: 400,
+  })
+  @ApiBearerAuth()
+  @UseGuards(RefreshJwtAuthGuard)
+  @Post('refresh')
+  async refresh(@Req() req: any) {
+    return await this.authService.generateToken(req.user);
   }
 }

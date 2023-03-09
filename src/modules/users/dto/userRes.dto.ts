@@ -17,4 +17,7 @@ export class UserResDto {
 
   @ApiProperty({ description: 'User token', nullable: false })
   readonly token: string;
+
+  @ApiProperty({ description: 'User refresh token', nullable: false })
+  readonly refreshToken: string;
 }

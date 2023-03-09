@@ -4,8 +4,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './authService';
 import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
-import { LocalStrategy } from './local.strategy';
-import { JwtStrategy } from './jwt.strategy';
+import { LocalStrategy } from './strategy/local.strategy';
+import { JwtStrategy } from './strategy/jwt.strategy';
+import { RefreshJwtStrategy } from './strategy/refresh.jwt.strategy';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { JwtStrategy } from './jwt.strategy';
       signOptions: { expiresIn: process.env.TOKEN_EXPIRATION },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, RefreshJwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}
