@@ -47,7 +47,11 @@ $ npm run start:prod
 
 ## Test
 
+
 ```bash
+# before run test run migration for test db (create test db if it not exist)
+$ NODE_ENV=test npx sequelize-cli db:migrate
+
 # unit tests
 $ npm run test
 

@@ -4,7 +4,7 @@ import { UserDto } from '../users/dto/user.dto';
 import { LogInDto } from '../users/dto/logIn.dto';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserResDto } from '../users/dto/userRes.dto';
-import { ExceptionResponse } from 'src/core/exceptions/dto/exceptionResponse';
+import { ExceptionResponse } from '../../core/exceptions/dto/exceptionResponse';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { RefreshJwtAuthGuard } from './guards/refresh.jwt.guard';
 import { RefreshDto } from './dto/refresh.dto';
